@@ -17,11 +17,3 @@ webserver:
 scheduler:
     links:
         - mysql:mysql
-
-worker:
-    links:
-        - mysql:mysql
-
-flower:
-    links:
-        - mysql:mysql

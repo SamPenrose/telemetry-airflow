@@ -7,18 +7,6 @@ MYSQL_PORT="3306"
 RABBITMQ_HOST="rabbitmq"
 RABBITMQ_CREDS="airflow:airflow"
 
-# Wait for RabbitMQ
-j=0
-while ! curl -sI -u $RABBITMQ_CREDS http://$RABBITMQ_HOST:15672/api/whoami |grep '200 OK'; do
-  j=`expr $j + 1`
-  if [ $j -ge $TRY_LOOP ]; then
-    echo "$(date) - $RABBITMQ_HOST still not reachable, giving up"
-    exit 1
-  fi
-  echo "$(date) - waiting for RabbitMQ... $j/$TRY_LOOP"
-  sleep 5
-done
-
 # Generate Fernet key for replacement below
 export FERNET_KEY=$(python -c "from cryptography.fernet import Fernet; FERNET_KEY = Fernet.generate_key().decode(); print FERNET_KEY")
 
